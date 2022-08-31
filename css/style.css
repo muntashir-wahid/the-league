@@ -1,4 +1,4 @@
 .main-header {
-  background-image: url("/images/bg-image.jpg");
+  background-image: url("../images/bg-image.jpg");
   height: 90vh;
 }
