@@ -15,18 +15,35 @@ const btnShowAll = document.getElementById("btn-show-all");
 // Page logics
 /* ******************** */
 
+let getAllTeams;
+
 const loadLeagueAllTeamsData = function (leagueName) {
   fetch(
     `https://www.thesportsdb.com/api/v1/json/2/search_all_teams.php?l=${leagueName}`
   )
     .then((res) => res.json())
-    .then((data) => getTeamsData(data.teams));
+    .then((data) => {
+      const allTeams = data.teams;
+      getTeamsData(allTeams);
+      getAllTeams = function () {
+        return allTeams;
+      };
+    });
+};
+
+const getTeamsData = function (teamsData) {
+  btnShowAll.addEventListener("click", function () {
+    renderLeagueData(teamsData);
+    btnShowAll.classList.add("d-none");
+  });
+
+  renderLeagueData(teamsData.slice(0, 6));
 };
 
 const renderLeagueData = function (teamsData) {
   teamsContainerEl.innerHTML = "";
 
-  teamsData.forEach((teamData) => {
+  teamsData.forEach((teamData, i) => {
     // console.log(teamData);
     const teamCardEl = document.createElement("article");
     teamCardEl.classList.add("col");
@@ -47,21 +64,19 @@ const renderLeagueData = function (teamsData) {
           <p class="card-text">
             ${teamData.strDescriptionEN.slice(0, 150)}
           </p>
-          <button class="btn btn-primary">Show more</button>
-        </div>
+          </div>
+          <button 
+            class="btn btn-primary" 
+            data-bs-toggle="modal" 
+            data-bs-target="#teamDetails"
+            onclick="showDetailsHandler(${i})"
+          >
+            Show more
+          </button>
       </div>
     `;
     teamsContainerEl.append(teamCardEl);
   });
-};
-
-const getTeamsData = function (teamsData) {
-  btnShowAll.addEventListener("click", function () {
-    renderLeagueData(teamsData);
-    btnShowAll.classList.add("d-none");
-  });
-
-  renderLeagueData(teamsData.slice(0, 6));
 };
 
 const defaultLeague = selectedLeagueEl.value;
@@ -72,3 +87,16 @@ selectedLeagueEl.addEventListener("change", function () {
   loadLeagueAllTeamsData(selectedLeague);
   btnShowAll.classList.remove("d-none");
 });
+
+const showDetailsHandler = function (index) {
+  const team = getAllTeams()[index];
+  console.log(team);
+  renderTeamDetailsModal(team);
+};
+
+const renderTeamDetailsModal = function (team) {
+  document.getElementById(
+    "teamDetailsLabel"
+  ).innerText = `${team.strAlternate}`;
+  document.querySelector(".modal-body").innerText = `${team.strDescriptionEN}`;
+};

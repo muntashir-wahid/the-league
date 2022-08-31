@@ -15,6 +15,43 @@
     <title>The League</title>
   </head>
   <body>
+    <!-- Modal for showing team details -->
+
+    <div
+      class="modal fade"
+      id="teamDetails"
+      tabindex="-1"
+      aria-labelledby="teamDetailsLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-info" id="teamDetailsLabel">
+              Modal title
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Page main header -->
     <header class="mb-5">
       <h1 class="text-center text-primary">The League</h1>
